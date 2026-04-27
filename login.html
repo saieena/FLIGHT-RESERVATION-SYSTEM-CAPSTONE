@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SkySwift - Login & Sign Up</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            /* FIXED: Use /static/ instead of local C: drive path */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('/static/airplane_image.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .auth-card input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .toggle-link {
+            margin-top: 15px;
+            display: block;
+            color: #1a73e8;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <h1 id="form-title" style="color:#1a73e8; margin-top:0;">SkySwift Login</h1>
+        <p id="form-sub">Enter your details to fly with us</p>
+        
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        
+        <button id="main-btn" onclick="handleSubmit()" class="btn" style="width:100%; margin-top:10px;">Login</button>
+        
+        <span class="toggle-link" id="toggle-text" onclick="toggleForm()">Don't have an account? Sign Up</span>
+    </div>
+
+    <script>
+        let isLogin = true;
+
+        function toggleForm() {
+            isLogin = !isLogin;
+            document.getElementById('form-title').innerText = isLogin ? 'SkySwift Login' : 'SkySwift Sign Up';
+            document.getElementById('main-btn').innerText = isLogin ? 'Login' : 'Create Account';
+            document.getElementById('toggle-text').innerText = isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login";
+        }
+
+        async function handleSubmit() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            
+            if(!u || !p) return alert("Please fill in all fields");
+
+            const endpoint = isLogin ? '/api/login' : '/api/signup';
+            
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: u, password: p})
+            });
+            
+            const data = await res.json();
+            
+            if(data.status === 'success') {
+                if(isLogin) {
+                    window.location.href = '/';
+                } else {
+                    alert("Account created! You can now login.");
+                    toggleForm();
+                }
+            } else {
+                alert(data.message);
+            }
+        }
+    </script>
+
+</body>
+</html>

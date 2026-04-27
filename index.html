@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SkySwift - Flights</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="main-container">
+        <header class="app-bar">
+            <h2>SkySwift Dashboard</h2>
+            <div>Welcome, {{ user }} | <a href="/logout" style="color:white">Logout</a></div>
+        </header>
+
+        <div class="content-area">
+
+            <!-- SCREEN 1: SEARCH -->
+            <section id="step-search" class="screen active">
+                <h3>Search Flights</h3>
+                <div class="search-grid">
+                    <input type="text" id="src" placeholder="Source City (e.g. London)">
+                    <input type="text" id="dest" placeholder="Destination City (e.g. New York)">
+                    <button class="btn-primary" onclick="searchFlights()">Search</button>
+                </div>
+                <div id="flight-results"></div>
+            </section>
+
+            <!-- SCREEN 2: SEAT SELECTION -->
+            <section id="step-seats" class="screen">
+                <button onclick="showScreen('step-search')">← Back to Search</button>
+                <h3 id="seat-header">Select a Seat</h3>
+                <div class="seat-map" id="seat-container"></div>
+
+                <div style="text-align:center; margin-top:20px;">
+                    <button class="btn-primary" id="btn-proceed" style="display:none" onclick="proceedToPayment()">
+                        Confirm Selection
+                    </button>
+                </div>
+            </section>
+
+            <!-- SCREEN 3: CONFIRMATION & TICKET -->
+            <section id="step-confirm" class="screen">
+
+                <div style="text-align:center; margin-bottom: 20px;">
+                    <h1 style="color:green; margin:0;">Booking Confirmed!</h1>
+                    <p>Your flight is officially reserved. Here is your ticket:</p>
+                </div>
+
+                <!-- TICKET -->
+                <div class="ticket-card-visual">
+
+                    <div class="ticket-header">
+                        <h3>SkySwift Boarding Pass</h3>
+                        <span style="background:white; color:green; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">
+                            CONFIRMED
+                        </span>
+                    </div>
+
+                    <div class="ticket-body">
+
+                        <div class="ticket-row">
+                            <div>
+                                <label>PASSENGER NAME</label>
+                                <p id="t-name">{{ user }}</p>
+                            </div>
+
+                            <div>
+                                <label>BOOKING ID</label>
+                                <p id="t-id">#000</p>
+                            </div>
+                        </div>
+
+                        <div class="ticket-row">
+                            <div>
+                                <label>FROM</label>
+                                <p id="t-src">--</p>
+                            </div>
+
+                            <div style="align-self:center;">
+                                <i class="fas fa-plane" style="color:#1a73e8"></i>
+                            </div>
+
+                            <div>
+                                <label>TO</label>
+                                <p id="t-dest">--</p>
+                            </div>
+                        </div>
+
+                        <div class="ticket-row">
+                            <div>
+                                <label>AIRLINE</label>
+                                <p id="t-airline">--</p>
+                            </div>
+
+                            <div>
+                                <label>SEAT</label>
+                                <p id="t-seat" style="color:#1a73e8; font-weight:bold; font-size:20px;">--</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="ticket-footer">
+                        <p>Please present this at the gate 45 minutes before departure.</p>
+                    </div>
+
+                </div>
+
+                <div style="text-align:center; margin-top:30px;">
+                    <button class="btn-primary" onclick="window.print()" style="background:#555">
+                        Print Ticket
+                    </button>
+                    <button class="btn-primary" onclick="location.reload()" style="margin-left:10px;">
+                        Book Another Flight
+                    </button>
+                </div>
+
+            </section>
+
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
